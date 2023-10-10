@@ -10,7 +10,7 @@ import java.util.List;
 public class ApplicationUser implements UserDetails {
 
     private final List<?extends GrantedAuthority > grantedAuthorities;
-    private final String UserName;
+    private final String userName;
     private final String password;
     private final boolean isAccountNonExpired;
     private final boolean isAccountNonLocked;
@@ -20,14 +20,15 @@ public class ApplicationUser implements UserDetails {
 
 
     public ApplicationUser(List<? extends GrantedAuthority> grantedAuthorities,
-                           String userName,
-                           String password,
+
+                           String userName, String password,
                            boolean isAccountNonExpired,
                            boolean isAccountNonLocked,
                            boolean isCredentialsNonExpired,
                            boolean isEnabled) {
         this.grantedAuthorities = grantedAuthorities;
-        UserName = userName;
+        this.userName = userName;
+
         this.password = password;
         this.isAccountNonExpired = isAccountNonExpired;
         this.isAccountNonLocked = isAccountNonLocked;
@@ -37,36 +38,36 @@ public class ApplicationUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return grantedAuthorities;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return userName;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return isAccountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return isAccountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return isCredentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return isEnabled;
     }
 }
