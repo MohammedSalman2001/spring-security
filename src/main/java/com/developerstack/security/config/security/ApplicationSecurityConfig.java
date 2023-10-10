@@ -31,9 +31,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/","index").permitAll()
                 .antMatchers("/api/v1/**").hasRole(USER.name())
                 .antMatchers(HttpMethod.GET,"/member/api/v1/**").hasAnyRole(ADMIN.name(),MANAGER.name())
-                .antMatchers(HttpMethod.DELETE,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.name())
-                .antMatchers(HttpMethod.PUT,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.name())
-                .antMatchers(HttpMethod.POST,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.name())
+                .antMatchers(HttpMethod.DELETE,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.getPermission())
+                .antMatchers(HttpMethod.PUT,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.getPermission())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -43,27 +43,26 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
-       UserDetails user1= User.builder()
-               .username("user1")
+       UserDetails user= User.builder()
+               .username("user")
                .password(passwordEncoder.encode("1234"))
-               .roles(USER.name())
-
+               .authorities(USER.getSimpleGrantedAuthorities())
                .build();
 
-        UserDetails user2= User.builder()
-                .username("user2")
+        UserDetails manager= User.builder()
+                .username("manager")
                 .password(passwordEncoder.encode("1234"))
-                .roles(MANAGER.name())
+                .authorities(MANAGER.getSimpleGrantedAuthorities())
                 .build();
 
-        UserDetails user3= User.builder()
-                .username("user3")
+        UserDetails admin= User.builder()
+                .username("admin")
                 .password(passwordEncoder.encode("1234"))
-                .roles(ADMIN.name())
+                .authorities(ADMIN.getSimpleGrantedAuthorities())
                 .build();
 
        return  new InMemoryUserDetailsManager(
-               user1,user2,user3
+               user,admin,manager
        );
 
     }

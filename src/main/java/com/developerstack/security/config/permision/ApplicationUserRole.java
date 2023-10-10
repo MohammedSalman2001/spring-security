@@ -10,8 +10,8 @@ import static com.developerstack.security.config.permision.ApplicationUserPermis
 
 public enum ApplicationUserRole {
 USER(Sets.newHashSet(ORDER_WRITE,PRODUCT_READ,CUSTOMER_WRITE,CUSTOMER_READ))
-    ,ADMIN(Sets.newHashSet(ORDER_WRITE,ORDER_WRITE,PRODUCT_READ,PRODUCT_WRITE,CUSTOMER_WRITE,CUSTOMER_READ))
-    ,MANAGER(Sets.newHashSet(ORDER_WRITE,PRODUCT_WRITE,CUSTOMER_READ));
+    ,ADMIN(Sets.newHashSet(ORDER_WRITE,ORDER_READ,PRODUCT_READ,PRODUCT_WRITE,CUSTOMER_WRITE,CUSTOMER_READ))
+    ,MANAGER(Sets.newHashSet(ORDER_WRITE,PRODUCT_READ,PRODUCT_WRITE,CUSTOMER_READ));
 
     private final Set<ApplicationUserPermission> permission;
 
