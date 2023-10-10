@@ -3,31 +3,32 @@ package com.developerstack.security.api;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("api/v1/orders")
 public class OrderController {
-    @PostMapping("/user")
+    @PostMapping
     public String createOrder(){
         return "createOrder";
     }
 
-    @PutMapping("/user")
+
+   @PutMapping
     public String updateOrder(){
         return "updateOrder";
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping
     public String deleteOrder(){
         return "deleteOrder";
     }
 
-
-    @GetMapping
+    @GetMapping()
     public String findOrder(){
         return "findOrder";
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public String findAllOrder(){
         return "findAllOrder";
     }
+
 }

@@ -6,27 +6,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
 
-    @PostMapping("/user")
+    @PostMapping
     public String createCustomer(){
         return "createCustomer";
     }
 
-    @PutMapping("/user")
+    @PutMapping
     public String updateCustomer(){
         return "updateCustomer";
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping
     public String deleteCustomer(){
         return "deleteCustomer";
     }
 
-    @GetMapping("/user")
+    @GetMapping
     public String findCustomer(){
         return "findCustomer";
     }
 
-    @GetMapping( "user/list")
+    @GetMapping( "list")
     public String findAllCustomer(){
         return "findAllCustomer";
     }

@@ -1,8 +1,10 @@
 package com.developerstack.security.config.permision;
 
 import com.google.common.collect.Sets;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.developerstack.security.config.permision.ApplicationUserPermission.*;
 
@@ -19,5 +21,15 @@ USER(Sets.newHashSet(ORDER_WRITE,PRODUCT_READ,CUSTOMER_WRITE,CUSTOMER_READ))
 
     public Set<ApplicationUserPermission> getPermission(){
         return permission;
+    }
+
+    public Set<SimpleGrantedAuthority> getSimpleGrantedAuthorities(){
+        Set<SimpleGrantedAuthority> permissions = getPermission().stream().map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+                .collect(Collectors.toSet());
+
+        permissions.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
+
+        return permissions;
+
     }
 }

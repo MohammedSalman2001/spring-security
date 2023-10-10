@@ -4,6 +4,7 @@ import com.developerstack.security.config.permision.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.developerstack.security.config.permision.ApplicationUserPermission.PRODUCT_WRITE;
 import static com.developerstack.security.config.permision.ApplicationUserRole.*;
 
 @Configuration
@@ -24,9 +26,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
+        http.csrf().disable().
+                authorizeHttpRequests()
                 .antMatchers("/","index").permitAll()
-                .antMatchers("/api/v1/**/user/**").hasRole(USER.name())
+                .antMatchers("/api/v1/**").hasRole(USER.name())
+                .antMatchers(HttpMethod.GET,"/member/api/v1/**").hasAnyRole(ADMIN.name(),MANAGER.name())
+                .antMatchers(HttpMethod.DELETE,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.name())
+                .antMatchers(HttpMethod.PUT,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.name())
+                .antMatchers(HttpMethod.POST,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -36,26 +43,27 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
-       UserDetails tarakra= User.builder()
-               .username("tarakra")
+       UserDetails user1= User.builder()
+               .username("user1")
                .password(passwordEncoder.encode("1234"))
                .roles(USER.name())
+
                .build();
 
-        UserDetails kamal= User.builder()
-                .username("kamal")
+        UserDetails user2= User.builder()
+                .username("user2")
                 .password(passwordEncoder.encode("1234"))
                 .roles(MANAGER.name())
                 .build();
 
-        UserDetails nalaka= User.builder()
-                .username("nalaka")
+        UserDetails user3= User.builder()
+                .username("user3")
                 .password(passwordEncoder.encode("1234"))
                 .roles(ADMIN.name())
                 .build();
 
        return  new InMemoryUserDetailsManager(
-               tarakra,nalaka,kamal
+               user1,user2,user3
        );
 
     }
