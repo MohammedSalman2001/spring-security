@@ -30,10 +30,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 authorizeHttpRequests()
                 .antMatchers("/","index").permitAll()
                 .antMatchers("/api/v1/**").hasRole(USER.name())
-                .antMatchers(HttpMethod.GET,"/member/api/v1/**").hasAnyRole(ADMIN.name(),MANAGER.name())
+             /*   .antMatchers(HttpMethod.GET,"/member/api/v1/**").hasAnyRole(ADMIN.name(),MANAGER.name())
                 .antMatchers(HttpMethod.DELETE,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.getPermission())
                 .antMatchers(HttpMethod.PUT,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.getPermission())
-                .antMatchers(HttpMethod.POST,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST,"/member/api/v1/**").hasAuthority(PRODUCT_WRITE.getPermission())*/
                 .anyRequest()
                 .authenticated()
                 .and()
