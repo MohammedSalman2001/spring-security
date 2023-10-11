@@ -9,27 +9,24 @@ import java.util.stream.Collectors;
 import static com.developerstack.security.config.permision.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
-USER(Sets.newHashSet(ORDER_WRITE,PRODUCT_READ,CUSTOMER_WRITE,CUSTOMER_READ))
-    ,ADMIN(Sets.newHashSet(ORDER_WRITE,ORDER_READ,PRODUCT_READ,PRODUCT_WRITE,CUSTOMER_WRITE,CUSTOMER_READ))
-    ,MANAGER(Sets.newHashSet(ORDER_WRITE,PRODUCT_READ,PRODUCT_WRITE,CUSTOMER_READ));
+    USER(Sets.newHashSet(ORDER_WRITE,CUSTOMER_WRITE,CUSTOMER_READ)),
+    ADMIN(Sets.newHashSet(ORDER_READ,ORDER_WRITE,PRODUCT_READ,PRODUCT_WRITE,CUSTOMER_READ,CUSTOMER_WRITE)),
+    MANAGER(Sets.newHashSet(ORDER_READ,PRODUCT_READ,PRODUCT_WRITE,CUSTOMER_READ));
 
-    private final Set<ApplicationUserPermission> permission;
+    private final Set<ApplicationUserPermission> permissions;
 
-    ApplicationUserRole(Set<ApplicationUserPermission> permission) {
-        this.permission = permission;
+    ApplicationUserRole(Set<ApplicationUserPermission> permissions) {
+        this.permissions = permissions;
     }
 
-    public Set<ApplicationUserPermission> getPermission(){
-        return permission;
-    }
-
-    public Set<SimpleGrantedAuthority> getSimpleGrantedAuthorities(){
-        Set<SimpleGrantedAuthority> permissions = getPermission().stream().map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                .collect(Collectors.toSet());
-
-        permissions.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
-
+    public Set<ApplicationUserPermission> getPermissions() {
         return permissions;
-
+    }
+    public Set<SimpleGrantedAuthority> getGrantedAuthorities(){
+        Set<SimpleGrantedAuthority> permissions = getPermissions().stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+                .collect(Collectors.toSet());
+        permissions.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
+        return permissions;
     }
 }
